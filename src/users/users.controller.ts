@@ -5,50 +5,55 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
-  HttpCode,
   Param,
   Patch,
   Post,
   Query,
   Redirect,
 } from '@nestjs/common';
-import { STATUS_CODES } from 'http';
+import { UsersService } from './users.service';
+import { userInfo } from 'os';
 
 @Controller('users')
 export class UsersController {
-  // @Get()
-  // @Header(`custom`, 'val') // helps to set the status code of the response
-  // @Redirect('https://google.com', 204)
-  // findAll() {
-  //   return 'Hello There';
-  // }
-
+  constructor(private usersService: UsersService) {}
   @Get()
-  @Redirect('https://docs.nestjs.com', 302)
-  getDocs(@Query('version') version) {
-    if (version && version === '5') {
-      return { url: 'https://docs.nestjs.com/v5/' };
-    }
+  findAll(@Query('role') role?: 'Intern' | 'Engineer' | 'Admin') {
+    return this.usersService.findAll(role);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return { id };
+    return this.usersService.findOne(+id);
   }
 
   @Post()
-  create(@Body() user: {}) {
-    return user;
+  create(
+    @Body()
+    user: {
+      name: string;
+      email: string;
+      role: 'Intern' | 'Engineer' | 'Admin';
+    },
+  ) {
+    return this.usersService.create(user);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() userupdate: {}) {
-    return { id, ...userupdate };
+  update(
+    @Param('id') id: string,
+    @Body()
+    updatedUser: {
+      name?: string;
+      email?: string;
+      role?: 'Intern' | 'Engineer' | 'Admin';
+    },
+  ) {
+    return this.usersService.update(+id, updatedUser);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return { id };
+    return this.usersService.delete(+id);
   }
 }
