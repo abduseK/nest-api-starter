@@ -1,3 +1,5 @@
+// Concept of controller and how they work
+
 import {
   Body,
   Controller,
@@ -11,10 +13,9 @@ import {
 
 @Controller('users')
 export class UsersController {
-  // lets add query parameter for the get request
-  @Get() // /user, returns all users
-  findAll(@Query('role') role?: 'Engineer' | 'Admin' | 'VEP') {
-    return [];
+  @Get()
+  findAll() {
+    return 'Hello There';
   }
 
   @Get(':id')
