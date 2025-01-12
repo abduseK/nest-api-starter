@@ -5,15 +5,18 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import { STATUS_CODES } from 'http';
 
 @Controller('users')
 export class UsersController {
   @Get()
+  @HttpCode(303) // helps to set the status code of the response
   findAll() {
     return 'Hello There';
   }
