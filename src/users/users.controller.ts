@@ -11,29 +11,45 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { STATUS_CODES } from 'http';
+import { UsersService } from './users.service';
+import { userInfo } from 'os';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {}
   @Get()
-  @HttpCode(303) // helps to set the status code of the response
-  findAll() {
-    return 'Hello There';
+  findAll(@Query('role') role?: 'Intern' | 'Engineer' | 'Admin') {
+    return this.usersService.findAll(role);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return { id };
+    return this.usersService.findOne(+id);
   }
 
   @Post()
-  create(@Body() user: {}) {
-    return user;
+  create(
+    @Body()
+    user: {
+      name: string;
+      email: string;
+      role: 'Intern' | 'Engineer' | 'Admin';
+    },
+  ) {
+    return this.usersService.create(user);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() userupdate: {}) {
-    return { id, ...userupdate };
+  update(
+    @Param('id') id: string,
+    @Body()
+    updatedUser: {
+      name?: string;
+      email?: string;
+      role?: 'Intern' | 'Engineer' | 'Admin';
+    },
+  ) {
+    return this.usersService.update(+id, updatedUser);
   }
 
   @Delete(':id')
