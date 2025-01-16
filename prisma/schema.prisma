@@ -15,7 +15,13 @@ model Employee {
   email   String  @unique
   role  Role
   createdAt   DateTime  @default(now())
-  updateAt    DateTime  @updatedAt
+}
+
+model Users {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  role Role
 }
 
 enum Role {

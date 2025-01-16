@@ -1,53 +1,45 @@
-// Concept of controller and how they work
-
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  Patch,
   Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
   Query,
-  ParseIntPipe,
-  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateuserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  create(@Body() createUserDto: Prisma.UsersCreateInput) {
+    return this.usersService.create(createUserDto);
+  }
+
   @Get()
   findAll(@Query('role') role?: 'Intern' | 'Engineer' | 'Admin') {
-    return this.usersService.findAll(role);
+    return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
-  }
-
-  @Post()
-  create(
-    @Body(ValidationPipe)
-    createUserDto: CreateuserDto,
-  ) {
-    return this.usersService.create(createUserDto);
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe)
-    updateUserDto: UpdateUserDto,
+    @Param('id') id: string,
+    @Body() updateUserDto: Prisma.UsersUpdateInput,
   ) {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.delete(id);
+  remove(@Param('id') id: string) {
+    return this.usersService.remove(+id);
   }
 }
