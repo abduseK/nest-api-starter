@@ -7,7 +7,7 @@ services:
     startCommand: npm run start:prod
     envVars:
       - key: DATABASE_URL
-        value:
+        value: >
           {
             {
               'postgresql://nest_starter_owner:bOBGJKWlZ42y@ep-damp-bread-a5kq4c2b-pooler.us-east-2.aws.neon.tech/nest_starter?sslmode=require',
