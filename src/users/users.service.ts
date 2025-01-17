@@ -11,12 +11,8 @@ export class UsersService {
     });
   }
 
-  async findAll(role?: 'Intern' | 'Engineer' | 'Admin') {
-    return this.databaseService.users.findMany({
-      where: {
-        role,
-      },
-    });
+  async findAll() {
+    return this.databaseService.users.findMany();
   }
 
   async findOne(id: number) {
